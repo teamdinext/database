@@ -1,0 +1,81 @@
+CREATE TABLE TEACHER(
+TeachID			Tinyint			UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+FName			Varchar(20)		NOT NULL,
+LName			Varchar(30)		NOT NULL,
+PrimePhone		Varchar(10)		NOT NULL,
+Email			Varchar(30)		NULL,
+Username		Varchar(25)		NOT NULL,
+PW				Varchar(25)		NOT NULL,
+PRIMARY KEY (TeachID)
+) AUTO_INCREMENT = 100;
+
+CREATE TABLE CLASS(
+ClassID			Tinyint			UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+TeachID			Tinyint			UNSIGNED NOT NULL,
+CourseCode		Varchar(10)		NOT NULL,
+CourseName		Varchar(30)		NULL, 
+NoOfGroups		Tinyint			UNSIGNED NOT NULL,
+IsCanvasEnabled	Boolean			NOT NULL,
+World			Enum ('Dragon', 'Tree', 'Snowman') NOT NULL,
+PRIMARY KEY (ClassID),
+								FOREIGN KEY (TeachID)
+                                REFERENCES TEACHER (TeachID)
+                                ON UPDATE NO ACTION
+                                ON DELETE NO ACTION
+) AUTO_INCREMENT = 300;
+
+CREATE TABLE GRADE_SCALE(
+GradeScaleID	Tinyint			UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ClassID			Tinyint			UNSIGNED NOT NULL,
+IsCanvasEnabled	Boolean			NOT NULL,
+ToLvl2			Tinyint			NULL,	
+ToLvl3			Tinyint			NULL,
+ToLvl4			Tinyint			NULL,
+ToLvl5			Tinyint			NULL,	
+ToLvl6			Tinyint			NULL,	
+ToLvl7			Tinyint			NULL,	
+ToLvl8			Tinyint			NULL,		
+ToLvl9			Tinyint			NULL,
+UNIQUE (ClassID),
+PRIMARY KEY (GradeScaleID),
+								FOREIGN KEY (ClassID)
+                                REFERENCES CLASS (ClassId)
+                                ON UPDATE NO ACTION
+                                ON DELETE NO ACTION
+) AUTO_INCREMENT = 100;
+
+CREATE TABLE TEAM(
+TeamID			Tinyint			UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ClassID			Tinyint			UNSIGNED NOT NULL,
+NoOfStuds		Tinyint			UNSIGNED NOT NULL,
+AvatarName		Varchar(20)		NOT NULL,
+AvatarLevel		Tinyint			NOT NULL,
+AvatarColor		Enum ('Red', 'Green', 'Blue') NOT NULL,
+PointsEarned	Tinyint			NOT NULL,
+PRIMARY KEY (TeamID),
+								FOREIGN KEY (ClassID)
+                                REFERENCES CLASS (ClassId)
+                                ON UPDATE NO ACTION
+                                ON DELETE NO ACTION
+);
+
+CREATE TABLE STUDENT(
+StudID			Tinyint			UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+Username		Varchar(25)		NOT NULL,
+PW				Varchar(25)		NOT NULL,
+PRIMARY KEY (StudID)
+) AUTO_INCREMENT = 10;
+
+CREATE TABLE STUD_TEAM_INT(
+StudID			Tinyint			UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+TeamID			Tinyint			UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+								FOREIGN KEY (StudID)
+                                REFERENCES STUDENT (StudId)
+                                ON UPDATE NO ACTION
+                                ON DELETE NO ACTION,
+                                FOREIGN KEY (TeamID)
+                                REFERENCES TEAM (TeamId)
+                                ON UPDATE NO ACTION
+                                ON DELETE NO ACTION
+);
+
